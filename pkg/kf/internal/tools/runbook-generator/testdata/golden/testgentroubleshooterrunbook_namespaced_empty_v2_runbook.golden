@@ -1,0 +1,15 @@
+# Test:	TestGenTroubleshooterRunbook/namespaced_empty_v2
+# friendlyname: Foo
+# gvr:
+#   Group: kf.dev
+#   Resource: foos
+#   Version: v1alpha1
+# namespaced?: true
+# version: v2.0
+
+---
+title: Troubleshoot Foos
+---
+Use these steps to troubleshoot various issues that can occur when using Kf Foos.
+
+

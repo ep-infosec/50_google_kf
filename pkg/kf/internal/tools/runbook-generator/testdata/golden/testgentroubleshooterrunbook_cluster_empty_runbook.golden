@@ -1,0 +1,15 @@
+# Test:	TestGenTroubleshooterRunbook/cluster_empty
+# friendlyname: ClusterFoo
+# gvr:
+#   Group: kf.dev
+#   Resource: clusterfoos
+#   Version: v1alpha1
+# namespaced?: false
+# version: v1.0
+
+---
+title: Troubleshoot ClusterFoos
+---
+Use these steps to troubleshoot various issues that can occur when using Kf ClusterFoos.
+
+

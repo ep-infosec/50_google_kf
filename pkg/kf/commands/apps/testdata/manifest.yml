@@ -1,0 +1,76 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+applications:
+- name: instances-app
+  instances: 9
+- name: autoscaling-instances-app
+- name: docker-app
+  docker:
+    image: gcr.io/docker-app
+- name: buildpack-app
+  buildpacks:
+  - java
+  - tomcat
+  path: example-app
+- name: buildpack-app-with-stack
+  stack: "v3stack"
+  buildpacks:
+  - java
+  - tomcat
+  path: example-app
+- name: auto-buildpack-app
+  path: example-app
+- name: routes-app
+  no-route: false
+  random-route: false
+  routes:
+  - route: example.com
+  - route: www.example.com/foo
+  - route: https://host.example.com/foo
+- name: wildcard-routes-app
+  no-route: false
+  random-route: false
+  routes:
+  - route: "*.example.com"
+  - route: "*.host.example.com/foo"
+  - route: "https://*.shost.example.com/bar"
+- name: random-route-app
+  no-route: false
+  random-route: true
+- name: http-health-check-app
+  docker:
+    image: gcr.io/http-health-check-app
+  health-check-type: http
+  timeout: 42
+  health-check-http-endpoint: /healthz
+- name: tcp-health-check-app
+  docker:
+    image: gcr.io/tcp-health-check-app
+  health-check-type: port
+  timeout: 33
+- name: resources-app
+  memory: 2G
+  disk_quota: 2G
+  cpu: "2"
+- name: bad-dockerfile-app
+  dockerfile:
+    path: does-not-exist
+- name: dockerfile-app
+  path: dockerfile-app
+  dockerfile:
+    path: Dockerfile
+- name: bad-stack-app
+  stack: foo

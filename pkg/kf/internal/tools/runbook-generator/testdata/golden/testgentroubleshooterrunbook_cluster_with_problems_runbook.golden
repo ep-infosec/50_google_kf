@@ -1,0 +1,95 @@
+# Test:	TestGenTroubleshooterRunbook/cluster_with_problems
+# friendlyname: ClusterFoo
+# gvr:
+#   Group: kf.dev
+#   Resource: clusterfoos
+#   Version: v1alpha1
+# namespaced?: false
+# version: v1.0
+
+---
+title: Troubleshoot ClusterFoos
+---
+Use these steps to troubleshoot various issues that can occur when using Kf ClusterFoos.
+
+## First problem. {#problem-0}
+
+Run the following command to get the resource information, then check for the causes listed below:
+
+```sh
+kubectl get clusterfoos.kf.dev CLUSTERFOO_NAME -o yaml
+```
+
+The `kf` CLI can help check for some of the issues:
+
+```sh
+kf doctor clusterfoo/CLUSTERFOO_NAME
+```
+
+<table>
+<thead>
+<tr><th>Possible Cause</th><th>Solution</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>
+First Cause.
+</td>
+<td>
+<p><strong>Some</strong> recommendation <a href="https://example.com">link</a>.</p>
+
+</td>
+</tr>
+<tr>
+<td>
+Second Cause.
+</td>
+<td>
+<p><strong>Some</strong> recommendation <a href="https://example.com">link</a>.</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+## Second problem. {#problem-1}
+
+Run the following command to get the resource information, then check for the causes listed below:
+
+```sh
+kubectl get clusterfoos.kf.dev CLUSTERFOO_NAME -o yaml
+```
+
+The `kf` CLI can help check for some of the issues:
+
+```sh
+kf doctor clusterfoo/CLUSTERFOO_NAME
+```
+
+<table>
+<thead>
+<tr><th>Possible Cause</th><th>Solution</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Cause 2.1.
+</td>
+<td>
+<p><strong>Some</strong> recommendation <a href="https://example.com">link</a>.</p>
+
+</td>
+</tr>
+<tr>
+<td>
+Cause 2.2.
+</td>
+<td>
+<p><strong>Some</strong> recommendation <a href="https://example.com">link</a>.</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+

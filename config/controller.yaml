@@ -1,0 +1,87 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    operator.knative.dev/mode: Reconcile
+  labels:
+    kf.dev/release: VERSION_PLACEHOLDER
+  name: controller
+  namespace: kf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: controller
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: controller
+        kf.dev/release: VERSION_PLACEHOLDER
+    spec:
+      serviceAccountName: controller
+      containers:
+      - name: controller
+        # This is the Go import path for the binary that is containerized
+        # and substituted here.
+        image: ko://github.com/google/kf/v2/cmd/controller
+        args:
+          # TODO(b/178107014): This flag will be deprecated at some point. We
+          # should try to get our controllers to work with HA before that.
+        - --disable-ha=true
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        # We use a livenessProbe instead of a readinessProbe because if the
+        # health check fails, then it will restart the pod (instead of not
+        # signaling it at all). This is necessary for Workload Identity.
+        # Without the pod restarting, if WI wasn't working at the beginning of
+        # the pod starting, it would never work.
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 10000
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        ports:
+        - name: metrics
+          containerPort: 9090
+        volumeMounts:
+        - name: config-logging
+          mountPath: /etc/config-logging
+        env:
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONFIG_LOGGING_NAME
+          value: config-logging
+        - name: CONFIG_OBSERVABILITY_NAME
+          value: config-observability
+        - name: METRICS_DOMAIN
+          value: kf.dev
+        - name: KUBERNETES_MIN_VERSION
+          value: v1.21.0
+      volumes:
+        - name: config-logging
+          configMap:
+            name: config-logging
